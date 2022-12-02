@@ -1,4 +1,4 @@
-import fs from 'fs';
+import { parseTextFile } from '../parseTextFile';
 
 export const calorieCounting = (path: string, numberOfElvesToCheck: number = 1) => {
   const data = parseTextFile(path);
@@ -22,7 +22,3 @@ export const calorieCounting = (path: string, numberOfElvesToCheck: number = 1) 
       return previousValue + currentValue;
     }, 0);
 };
-
-function parseTextFile(path: string) {
-  return fs.readFileSync(path, { encoding: 'utf8', flag: 'r' });
-}
