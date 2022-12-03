@@ -1,6 +1,6 @@
 import { parseTextFile } from '../parseTextFile';
 
-export const rucksuckOrganisation = (path: string) => {
+export const rucksuckReorganisation = (path: string) => {
   return parseTextFile(path)
     .split('\n')
     .filter((val) => val !== '')
@@ -10,6 +10,33 @@ export const rucksuckOrganisation = (path: string) => {
       const compartmentTWo = rucksack.split('').splice(middle);
 
       return [...new Set(compartmentOne.filter((item) => compartmentTWo.includes(item)))];
+    })
+    .reduce((previousValue, currentItem) => {
+      return previousValue + letterScore[currentItem];
+    }, 0);
+};
+
+export const findGroupBadgeAuthenticityStickers = (path: string) => {
+  return parseTextFile(path)
+    .split('\n')
+    .filter((val) => val !== '')
+    .reduce((groups: string[][], elf, currentIndex) => {
+      const chunkIndex = Math.floor(currentIndex / 3);
+
+      if (!groups[chunkIndex]) {
+        groups[chunkIndex] = [];
+      }
+      groups[chunkIndex].push(elf);
+
+      return groups;
+    }, [])
+    .flatMap((group) => {
+      const elfOne = group[0].split('');
+      const elfTwo = group[1].split('');
+      const elfThree = group[2].split('');
+
+      const same = elfOne.filter((item) => elfTwo.includes(item));
+      return [...new Set(same.filter((item) => elfThree.includes(item)))];
     })
     .reduce((previousValue, currentItem) => {
       return previousValue + letterScore[currentItem];
